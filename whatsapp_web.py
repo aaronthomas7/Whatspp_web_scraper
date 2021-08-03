@@ -11,6 +11,10 @@ import csv
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
+import pandas as pd
+from gspread_dataframe import set_with_dataframe
+
+
 from simon.accounts.pages import LoginPage
 from simon.chat.pages import ChatPage
 from simon.chats.pages import PanePage
@@ -21,6 +25,11 @@ scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/aut
 credentials = ServiceAccountCredentials.from_json_keyfile_name('spreadsheetdata-321315-fc1e730d581b.json',scope)
 
 gc = gspread.authorize(credentials)
+
+wks = gc.open('universal adventures sheet').sheet1
+
+wks.clear()
+
 
 '''
 #name of csv file
@@ -67,27 +76,64 @@ print("Opening the unread chats")
 unread_chats = driver.find_elements_by_xpath("//span[@class='_23LrM']")
 print(unread_chats)
 print("Unread chats are gonna open")
+wks.update_cell(1,1,'Names')
+wks.update_cell(1,2,'Time')
+wks.update_cell(1,3,'Chats')
+
+userid = driver.find_elements_by_xpath("//span[@dir='auto'][@class='_ccCW FqYAR i0jNr']")
+a = 2
+b = 1
+for j in userid:
+	try:
+		print(j.text)
+		wks.update_cell(a,b,j.text)
+		a = a+1
+	except:
+		pass
+
+time = driver.find_elements_by_xpath("//div[@class='_1i_wG']")
+a = 2 
+b = 2
+for k in time:
+	try:
+		print(k.text)
+		wks.update_cell(a,b,k.text)
+		a=a+1
+	except:
+		pass
+
 for chat in unread_chats:
-	chat.click()
-	#userid = driver.find_elements_by_xpath("//span[@class='_ccCW FqYAR i0jNr']")
-	#print(userid.title)
+	'''userid = driver.find_elements_by_xpath("//span[@dir='auto'][@class='_ccCW FqYAR i0jNr']")
+	a = 2
+	b = 1
+	for j in userid:
+		print(j.text)
+		wks.update_cell(a,b,j.text)
+		a = a+1'''
+	'''time = driver.find_elements_by_xpath("//span[@class='_1i_wG']")
+	a = 2 
+	b = 2
+	for k in time:
+		print(k.text)
+		wks.update_cell(a,b,k.text)
+		a=a+1'''
 	#last_message_time = driver.find_elements_by_xpath("//span[@class='_1i_wG']")
 	#print(last_message_time.text)
-	print("Reading")
+	#print("Reading")
+	chat.click()
+	a = 2 
+	b = 3
 	message = driver.find_elements_by_xpath("//span[@class='i0jNr selectable-text copyable-text']")
 	for i in message:
-		print(i.text)
-		f.write(i.text)
-		f.write('\n')
-		wks = gc.open('universal adventures sheet').sheet1
-		#print(wks.get_all_records())
-		wks.append_row(i.text)
-	print()
-	print()
-	print()
+		try:
+			print(i.text)
+			wks.update_cell(a,b,i.text)
+			a = a+1
+		except:
+			pass
 
 f.close()
-
+'''
 f = open('output_whatsapp_web.txt','r')
 
 data = f.read()
@@ -97,4 +143,4 @@ for word in words:
 	if word not in result:
 		result[word]=0
 	result[word]+=1
-print(result)
+print(result)'''
