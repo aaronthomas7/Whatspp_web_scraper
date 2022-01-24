@@ -20,10 +20,6 @@ from simon.chat.pages import ChatPage
 from simon.chats.pages import PanePage
 from simon.header.pages import HeaderPage
 
-scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
-
-
-
 gc = gspread.authorize(credentials)
 
 wks = gc.open('universal adventures sheet').sheet1
