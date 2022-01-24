@@ -22,7 +22,7 @@ from simon.header.pages import HeaderPage
 
 scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
 
-credentials = ServiceAccountCredentials.from_json_keyfile_name('spreadsheetdata-321315-fc1e730d581b.json',scope)
+
 
 gc = gspread.authorize(credentials)
 
